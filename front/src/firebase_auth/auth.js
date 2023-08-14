@@ -1,5 +1,6 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { initializeApp } from 'firebase/app';
+import { useRecoilState } from "recoil";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDB5PYFLBn3hFTAT_SD-x-ggcUKgVtWfno",
@@ -12,10 +13,13 @@ const firebaseConfig = {
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
-const auth = getAuth(firebaseApp);
+export const auth = getAuth(firebaseApp);
 
 export function handleLogin() {
     const provider = new GoogleAuthProvider();
+    console.log("here", provider)
+
+    // const [isAuth, setIsAuth] = useRecoilState(authState);
 
     signInWithPopup(auth, provider)
         .then((result) => {
@@ -24,6 +28,7 @@ export function handleLogin() {
             const token = credential.accessToken;
             // The signed-in user info.
             const user = result.user;
+            console.log("gooooooooood", credential, token, user)
             // IdP data available using getAdditionalUserInfo(result)
             // ...
         }).catch((error) => {
@@ -34,6 +39,7 @@ export function handleLogin() {
             const email = error.customData.email;
             // The AuthCredential type that was used.
             const credential = GoogleAuthProvider.credentialFromError(error);
+            console.log("baddddddddddddd", errorCode, errorMessage, email, credential)
             // ...
         });
 }

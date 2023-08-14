@@ -14,7 +14,6 @@ function App() {
       <Route path="/favorites" element={<Favorites />} />
       <Route path="/watchlist" element={<WatchList />} />
     </Routes>
-
   )
 }
 

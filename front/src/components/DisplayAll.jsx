@@ -1,6 +1,6 @@
 export function DisplayAll({ movieArr }) {
     return (
-        <div className="bg-gray-200 grid grid-cols-3 gap-[20px] mb-[20px] p-2">
+        <div className="bg-gray-200 grid grid-cols-2 gap-[20px] mb-[20px] p-2">
             {
                 movieArr?.map((elem, index) => {
                     return (

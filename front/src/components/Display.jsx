@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { FcSearch } from "react-icons/fc"
 import { Bottom } from "./Bottom";
 import { DisplayAll } from "./DisplayAll";
@@ -6,13 +6,16 @@ const movieURL = "http://www.omdbapi.com/?apikey=3c25f3c3&t=";
 
 export function Display() {
 
-    const [movieArr, setMovieArr] = useState(
-        JSON.parse(localStorage.getItem("imdb_movie_list")) != null && JSON.parse(localStorage.getItem("imdb_movie_list")).length > 0
-            ? JSON.parse(localStorage.getItem("imdb_movie_list"))
-            : []
-    )
+    // const [movieArr, setMovieArr] = useState(
+    //     JSON.parse(localStorage.getItem("imdb_movie_list")) != null && JSON.parse(localStorage.getItem("imdb_movie_list")).length > 0
+    //         ? JSON.parse(localStorage.getItem("imdb_movie_list"))
+    //         : []
+    // )
+    const [movieArr, setMovieArr] = useState([])
     console.log(movieArr, " 1st one ", movieArr.length)
     const [searchMovie, setSearchMovie] = useState("")
+    const iref = useRef(null)
+    iref.current = 0;
 
     function getCharacter() {
         let rnum = Math.random() * 25
@@ -22,25 +25,34 @@ export function Display() {
     }
 
     useEffect(() => {
-        console.log(JSON.parse(localStorage.getItem("imdb_movie_list")))
+        // console.log(JSON.parse(localStorage.getItem("imdb_movie_list")))
+
         async function createMovies() {
             let datastream = await fetch(movieURL + getCharacter());
             let data = await datastream.json()
-            console.log(data, " < - data");
-            setMovieArr(prev => [...prev, data])
+
+
+            // console.log(data, " < - data");
+            setMovieArr(prev => {
+                console.log(prev, movieArr);
+                return [...prev, data]
+            })
+
         }
+        console.log("enterting useffect --------------------------------------------------")
 
         if (movieArr?.length == 0) {
-            for (let i = 0; i < 10; i++) {
-                console.log("etra worek", i, "  iiiiiiiiiii", movieArr);
+            for (; iref.current < 10; iref.current++) {
+                console.log("etra worek", iref.current, "  iiiiiiiiiii", movieArr);
                 createMovies()
             }
-            localStorage.setItem("imdb_movie_list", JSON.stringify(movieArr))
+            // localStorage.setItem("imdb_movie_list", JSON.stringify(movieArr))
         }
 
         return () => {
-            console.log(" BYEY VYE BYE BYE ------------------");
+            console.log("bye now ")
         }
+
     }, [])
 
 
